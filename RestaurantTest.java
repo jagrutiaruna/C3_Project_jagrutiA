@@ -3,8 +3,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,7 +43,7 @@ class RestaurantTest{
         Restaurant restaurantSpy = Mockito.spy(restaurant);
         Mockito.when(restaurantSpy.getCurrentTime()).thenReturn(runTime);
         boolean openRestaurant = restaurantSpy.isRestaurantOpen();
-        assertEquals(false,openRestaurant);
+        assertFalse(openRestaurant);
 
     }
 
@@ -90,15 +89,34 @@ class RestaurantTest{
     
     @Test
     public void calculateOrderTotal_takes_listOfItems_as_parameter_and_returns_total_cost(){
-        restaurant = createRestaurantInstance();
-        restaurant.addToMenu("Sweet corn soup",119);
-        restaurant.addToMenu("Vegetable lasagne", 269);
-        restaurant.addToMenu("coffee",20);
-        restaurant.addToSelectedItem("coffee");
-        restaurant.addToSelectedItem("Vegetable lasagne");
+        creatingMenu();
+        restaurant.addToSelectedItems("coffee");
+        restaurant.addToSelectedItems("Vegetable lasagne");
         int orderTotal = restaurant.calculateOrderTotal(restaurant.getSelectedItem());
-        assertEquals(289,orderTotal);
+        assertEquals(269,orderTotal);
 
     }
+
+    @Test
+    public void adding_item_to_selectedItemList_should_increase_selectedItems_size_by_1(){
+        creatingMenu();
+        restaurant.addToSelectedItems("coffee");
+        restaurant.addToSelectedItems("Vegetable lasagne");
+        int initialSelectedItemsSize = restaurant.getSelectedItem().size();
+        restaurant.addToSelectedItems("Sweet corn soup");
+
+        assertEquals(initialSelectedItemsSize+1,restaurant.getSelectedItem().size());
+    }
+
+    //REFACTOR
+    public void creatingMenu(){
+        restaurant = createRestaurantInstance();
+        restaurant.addToMenu("Sweet corn soup",119);
+        restaurant.addToMenu("Vegetable lasagne", 249);
+        restaurant.addToMenu("coffee",20);
+        restaurant.addToMenu("Tea",10);
+
+    }
+
 
 }
