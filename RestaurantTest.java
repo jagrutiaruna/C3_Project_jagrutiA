@@ -87,6 +87,7 @@ class RestaurantTest{
     // the method should bring the corresponding price from Item class
     // return value should be total price of selected items
 
+    
     @Test
     public void calculateOrderTotal_takes_listOfItems_as_parameter_and_returns_total_cost(){
         restaurant = createRestaurantInstance();
